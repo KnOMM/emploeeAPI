@@ -1,4 +1,49 @@
-package com.example.spring.tutorial.restbackend.service;
+package com.example.spring.tutorial.restbackend.service.impl;
 
-public class EmployeeServiceImpl {
+import com.example.spring.tutorial.restbackend.exception.ResourceNotFoundException;
+import com.example.spring.tutorial.restbackend.model.Employee;
+import com.example.spring.tutorial.restbackend.repository.EmployeeRepository;
+import com.example.spring.tutorial.restbackend.service.EmployeeService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class EmployeeServiceImpl implements EmployeeService {
+
+    private final EmployeeRepository employeeRepository;
+
+    @Override
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
+    }
+
+    @Override
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
+    }
+
+    @Override
+    public Employee getEmployeeById(long id) {
+        return employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "Id", id));
+    }
+
+    @Override
+    public Employee updateEmployee(Employee employee, long id) {
+        Employee existingEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee", "Id", id));
+
+        existingEmployee.setFirstName(employee.getFirstName());
+        existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setEmail(employee.getEmail());
+        // saving to repository
+        employeeRepository.save(existingEmployee);
+        return existingEmployee;
+    }
+
+
 }
