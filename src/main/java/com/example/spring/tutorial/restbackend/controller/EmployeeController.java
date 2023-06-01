@@ -37,6 +37,6 @@ public class EmployeeController {
     }
 
     // update employee by id
-    @PutMapping("")
-    public ResponseEntity<Employee> updateEmployee()
+//    @PutMapping("")
+//    public ResponseEntity<Employee> updateEmployee()
 }
