@@ -37,6 +37,17 @@ public class EmployeeController {
     }
 
     // update employee by id
-//    @PutMapping("")
-//    public ResponseEntity<Employee> updateEmployee()
+    // curl -X PUT -H "Content-Type: application/json" -d '{"firstName":"Nazar", "lastName":"Zhuhan","email":"nazar@gmail.com"}' http://localhost:8080/api/employees/1
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable long id,
+                                                   @RequestBody Employee employee){
+        return new ResponseEntity<>(employeeService.updateEmployee(employee,id), HttpStatus.OK);
+    }
+
+    // curl -X DELETE http://localhost:8080/api/employees/3
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable long id){
+        employeeService.deleteEmployee(id);
+        return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+    }
 }
